@@ -21,12 +21,12 @@ public class CustomUserDetails implements UserDetails {
     }
 
     private GrantedAuthority makeGrantedAuthorityType(String role) {
-        // return () -> role;
-        return new GrantedAuthority() {
-            public String getAuthority() {
-                return role;
-            }
-        };
+        return () -> "ROLE_" + role;
+//        return new GrantedAuthority() {
+//            public String getAuthority() {
+//                return role;
+//            }
+//        };
     }
 
     @Override

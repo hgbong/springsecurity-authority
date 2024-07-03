@@ -22,7 +22,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/login", "/signup/**", "/error").permitAll()
                 .requestMatchers("/users/**").permitAll() // for test
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/admin/**").hasRole("ADMIN") // "ROLE_" prefix 붙일 경우, app 구동 시 런타임 에러
                 .requestMatchers("/partner/**").hasRole("PARTNER") // TODO 역할 계층
                 .anyRequest().authenticated())
             .formLogin(formLogin -> formLogin
@@ -30,11 +30,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    private final CustomAuthenticationProvider customAuthenticationProvider;
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(customAuthenticationProvider);
-    }
-
 }

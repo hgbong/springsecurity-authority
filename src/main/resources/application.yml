@@ -10,12 +10,12 @@ spring:
     password:
 
   jpa:
+    show-sql: true
     # database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create
     properties:
       hiberate:
         # dialect: org.hibernate.dialect.H2Dialect
-        format-sql: true
-        show-sql: true
+        format_sql: true
 
