@@ -2,8 +2,11 @@ package com.example.springsecurity_authority.config;
 
 import com.example.springsecurity_authority.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,10 +31,10 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // 굳이 여기서 선언 안하고, @Component CustomUserDetailsService.java 로 선언 가능
-    private final UserRepository userRepository;
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService(userRepository);
+    private final CustomAuthenticationProvider customAuthenticationProvider;
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(customAuthenticationProvider);
     }
+
 }
