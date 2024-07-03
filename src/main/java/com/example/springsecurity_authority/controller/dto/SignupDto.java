@@ -14,7 +14,7 @@ public class SignupDto {
         return User.builder()
             .username(username)
             .email(email)
-            .password(password)
+            .password("{noop}"+password) // AuthenticationProvider NoPasswordEncoder 에러 -> 일단 암호화 안하므로 {noop}
             .phoneNumber(phoneNumber)
             .build();
     }
