@@ -11,4 +11,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.email=:email")
     Optional<User> findByEmail(String email); // intellij 빌드 사용 시, -parameters 컴파일옵션 추가 및, out/ 디렉토리 삭제 후 재빌드 필요
+
+
+    // type-unsafety example
+    @Query("select count(u) >0 from User u where u.email=:email")
+    Optional<User> findCountByEmail(String email);
 }
