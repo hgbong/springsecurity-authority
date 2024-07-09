@@ -20,6 +20,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/**").permitAll() // for test
+
                 .requestMatchers("/login", "/signup/**", "/error").permitAll()
                 .requestMatchers("/users/**").permitAll() // for test
                 .requestMatchers("/admin/**").hasRole("ADMIN") // "ROLE_" prefix 붙일 경우, app 구동 시 런타임 에러

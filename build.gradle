@@ -59,7 +59,11 @@ sourceSets {
 */
 
 
-def generated = 'src/main/generated'
+//def generated =   'src/main/generated'
+def generated =   'src/main/generated'
+//tasks.withType(JavaCompile) {
+//	options.generatedSourceOutputDirectory = file(generated)
+//}
 
 clean {
 	delete file(generated)
