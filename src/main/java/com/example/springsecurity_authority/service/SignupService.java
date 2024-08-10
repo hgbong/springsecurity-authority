@@ -14,20 +14,6 @@ import java.util.Optional;
 public class SignupService {
     private final UserRepository userRepository;
 
-    @Value("${spring.profiles.active:}")
-    private String activeProfile;
-
-    @PostConstruct
-    public void init() {
-        if (!"local".equals(activeProfile)) {
-            return;
-        }
-
-        userRepository.save(User.builder()
-            .email("user@test.com").username("user").password("{noop}1234")
-            .build());
-    }
-
     public void signup(User user) {
         // 동일 이메일 가입 방지
         Optional<User> opUser = userRepository.findByEmail(user.getEmail());

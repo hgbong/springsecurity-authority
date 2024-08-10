@@ -5,6 +5,9 @@ server:
         name: JSESSIONID123
 
 spring:
+  profiles:
+    active: local
+
   data:
     redis:
       #host: invalid_localhost
