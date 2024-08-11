@@ -1,13 +1,19 @@
 package com.example.springsecurity_authority.controller;
 
 import com.example.springsecurity_authority.controller.dto.SignupDto;
+import com.example.springsecurity_authority.entity.Role;
 import com.example.springsecurity_authority.entity.User;
+import com.example.springsecurity_authority.entity.UserRole;
+import com.example.springsecurity_authority.repository.RoleRepository;
+import com.example.springsecurity_authority.repository.UserRoleRepository;
 import com.example.springsecurity_authority.service.SignupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,14 +24,13 @@ public class SignupController {
     @PostMapping("/admin")
     public void signupForAdmin(@RequestBody SignupDto dto) {
         User user = dto.makeUser();
-        user.changeRole("ADMIN"); // TODO constant or db 관리
+
         signupService.signup(user);
     }
 
     @PostMapping("/partner")
     public void signupForPartner(@RequestBody SignupDto dto) {
         User user = dto.makeUser();
-        user.changeRole("PARTNER");
         signupService.signup(user);
     }
 }

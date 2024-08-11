@@ -9,8 +9,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    boolean existsByRole(@Param("role") String roleName);
-
     @Query("select u from User u where u.email=:email")
     Optional<User> findByEmail(String email); // intellij 빌드 사용 시, -parameters 컴파일옵션 추가 및, out/ 디렉토리 삭제 후 재빌드 필요
 

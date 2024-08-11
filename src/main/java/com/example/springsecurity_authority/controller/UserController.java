@@ -26,7 +26,7 @@ public class UserController {
                     .username(user.getUsername())
                     .email(user.getEmail())
                     .userId(user.getUserId())
-                    .role(user.getRole())
+                    .roles(user.getUserRoles().stream().map(ur -> ur.getRole().getRoleName()).collect(Collectors.toList()))
                     .build())
                 .collect(Collectors.toList());
     }

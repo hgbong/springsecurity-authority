@@ -1,47 +1,56 @@
 package com.example.springsecurity_authority.controller.authz;
 
+import com.example.springsecurity_authority.controller.dto.UserResponseDto;
+import com.example.springsecurity_authority.entity.Role;
 import com.example.springsecurity_authority.entity.User;
+import com.example.springsecurity_authority.entity.UserRole;
+import com.example.springsecurity_authority.repository.RoleRepository;
 import com.example.springsecurity_authority.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
+import com.example.springsecurity_authority.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Transactional
-    @PutMapping("/users/{userId}/roles/{roleName}") // CONSIDER: use request body
-    public User changeUserRole(@PathVariable Long userId, @PathVariable String roleName) { // anti-pt (return entity)
+    @PutMapping("/users/{userId}/roles")
+    public UserResponseDto changeUserRole(@PathVariable Long userId, @RequestBody Map<String, Object> params) { // anti-pt (return entity)
         User targetUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("userId not exists. input userId: " + userId));
-        targetUser.changeRole(roleName);
+
+        List<String> roleNames = (List<String>) (params.get("roleNames"));
+        if (CollectionUtils.isEmpty(roleNames)) {
+            return null;
+        }
+
+        initUserRoles(targetUser); // TODO reafct
+        for (String roleName : roleNames) {
+            Role role = roleRepository.findByRoleName(roleName).orElseThrow(() -> new RuntimeException("role does not exists. input roleName: " + roleName));
+            UserRole userRole = UserRole.builder()
+                .user(targetUser).role(role).build();
+            userRoleRepository.save(userRole);
+        }
 
         if (!isAdminRoleExists()) {
             throw new RuntimeException("admin must be exist at least one");
         }
 
-        updateSessionForUserAuthChange(targetUser.getUsername(), Arrays.asList(roleName));
-        return targetUser;
+        updateSessionForUserAuthChange(targetUser.getUsername(), roleNames);
+        return UserResponseDto.from(targetUser);
+    }
+
+    private void initUserRoles(User targetUser) {
+        userRoleRepository.deleteByUser_UserId(targetUser.getUserId());
     }
 
     public void updateSessionForUserAuthChange(String username, List<String> newRoles) {
@@ -50,6 +59,6 @@ public class AdminController {
     }
 
     private boolean isAdminRoleExists() {
-        return userRepository.existsByRole("ADMIN");
+        return roleRepository.existsByRoleName("ADMIN");
     }
 }

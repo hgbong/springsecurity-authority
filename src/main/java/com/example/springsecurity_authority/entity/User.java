@@ -5,6 +5,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -22,19 +26,22 @@ public class User {
     private String email;
     private String password;
     private String phoneNumber;
-    private String role; // TODO 테이블 분리
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER) // FIXME EAGER 설정안할 시, UserDetails 가져오는 과정에서 tx이 이미 닫혀서 session(tx) not exists 에러 발생
+    // @Builder.Default // Builder에서는 항상 연관객체 할당
+    private List<UserRole> userRoles = new ArrayList<>();
 
     @Builder
-    public User(String username, String email, String password, String phoneNumber, String role) {
+    public User(String username, String email, String password, String phoneNumber, List<UserRole> userRoles) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.role = role;
-    }
 
-    public void changeRole(String role) {
-        this.role = role;
+        if(CollectionUtils.isEmpty(userRoles)) {
+            userRoles = new ArrayList<>();
+        }
+        this.userRoles = userRoles;
     }
 }
 

@@ -9,10 +9,10 @@ function changeUserRole() {
 
     const data = {
         userId: userId,
-        roleName: roleName
+        roleNames: [roleName]
     };
 
-    const url = `/admin/users/${userId}/roles/${roleName}`
+    const url = `/admin/users/${userId}/roles`
     fetch(url, {
         method: 'PUT',
         headers: {

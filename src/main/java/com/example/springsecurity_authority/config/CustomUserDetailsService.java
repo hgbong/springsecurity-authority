@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,11 +24,13 @@ public class CustomUserDetailsService implements UserDetailsService {
             return null;
         }
         User user = optUser.get();
+        List<String> roles = new ArrayList<>();
+        user.getUserRoles().forEach(ur -> roles.add(ur.getRole().getRoleName()));
 
         return CustomUserDetails.builder()
             .email(user.getEmail())
             .password(user.getPassword())
-            .role(user.getRole())
+            .roles(roles)
             .build();
     }
 }

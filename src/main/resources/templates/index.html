@@ -7,6 +7,7 @@
 </head>
 <body>
 <div class="container">
+
     <h1>User List</h1>
     <div>any authenticated user can access this page.</div>
     <table class="table table-striped">
@@ -23,18 +24,41 @@
             <td th:text="${user.userId}"></td>
             <td th:text="${user.username}"></td>
             <td th:text="${user.email}"></td>
-            <td th:text="${user.role}"></td>
+            <td>
+                <ul>
+                    <li th:each="role : ${user.roles}" th:text="${role}">Role</li>
+                </ul>
+            </td>
         </tr>
         </tbody>
     </table>
 
     <div class="mt-4">
-
         <!-- 만약 static html을 바로 제공하려는 경우 (SSR X) -->
         <!--        <a href="/manage-auth.html" class="btn btn-primary">권한 변경하러 가기</a>-->
         <a href="/manage-auth" class="btn btn-primary">권한 변경하러 가기</a>
         <a href="/logout" class="btn btn-primary">로그아웃</a>
     </div>
+
+    <h1>Role List</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Role ID</th>
+            <th>Role Name</th>
+            <th>URL Pattern</th>
+            <th>System Y/N</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="role : ${roles}">
+            <td th:text="${role.roleId}"></td>
+            <td th:text="${role.roleName}"></td>
+            <td th:text="${role.urlPattern}"></td>
+            <td th:text="${role.systemRoleYn}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

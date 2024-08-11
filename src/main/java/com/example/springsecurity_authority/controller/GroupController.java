@@ -14,20 +14,5 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/groups")
 public class GroupController {
-    private final UserRepository userRepository;
 
-    @GetMapping
-    public List<UserResponseDto> listUsers() {
-        // FIXME 바로 DAO 접근 X
-        return
-            userRepository.findAll()
-                .stream()
-                .map(user -> UserResponseDto.builder()
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .userId(user.getUserId())
-                    .role(user.getRole())
-                    .build())
-                .collect(Collectors.toList());
-    }
 }
