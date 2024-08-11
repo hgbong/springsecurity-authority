@@ -3,6 +3,8 @@ package com.example.springsecurity_authority.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,9 +29,16 @@ public class SecurityConfig {
 
             .formLogin(formLogin -> formLogin
                 .usernameParameter("email"))
-            .rememberMe(Customizer.withDefaults())
-        ;
+            .rememberMe(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    static RoleHierarchy roleHierarchy() {
+        return RoleHierarchyImpl.withDefaultRolePrefix()
+            .role("ADMIN").implies("DEVELOPER", "VIEWER")
+            .role("DEVELOPER").implies("VIEWER")
+            .build();
     }
 }
