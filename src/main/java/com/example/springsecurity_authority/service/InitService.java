@@ -21,8 +21,23 @@ public class InitService {
     @Value("${spring.profiles.active:}")
     private String activeProfile;
 
+    @Value("${my.test:}")
+    private String testValue;
+
     @PostConstruct
     public void init() {
+
+        /**TEST1. myconfig.yml과 application.yml 둘다 my.test 있을 경우
+         *  항상 myconfig.yml 설정된 값이 적용 (선언 위치 무관)
+         *
+         *
+         * TEST2. myconfig1, myconfig2 를 import하는 경우
+         *  뒤에 선언된 값이 적용
+         *   given::    import: 'classpath:myconfig2.yml,classpath:myconfig.yml'
+         *   then:: myconfig.yml 우선순위
+         */
+        System.out.println("testValue = " + testValue);
+
         if (!"local".equals(activeProfile)) {
             return;
         }

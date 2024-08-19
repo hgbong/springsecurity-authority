@@ -3,7 +3,6 @@ server:
     session:
       cookie:
         name: JSESSIONID123
-
 spring:
   profiles:
     active: local
@@ -38,3 +37,13 @@ spring:
     store-type: redis
     redis:
       namespace: hg:session
+
+
+  config:
+    # 아래 import 설정들 모두 유효
+    #import: 'classpath:myconfig2.yml,classpath:myconfig.yml'
+    import:
+      - 'classpath:myconfig.yml'
+      - 'classpath:myconfig2.yml'
+my:
+  test: application2.yml
