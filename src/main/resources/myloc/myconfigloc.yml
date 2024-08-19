@@ -1,0 +1,3 @@
+# application.yml를 통한 location 테스트용 설정파일
+my:
+  loc: myconfigloc

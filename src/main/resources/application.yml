@@ -40,6 +40,11 @@ spring:
 
 
   config:
+    # 아래 모두 not working..?
+    location: 'classpath:myloc/' # 최종 resource 참조 위치: classpath:myloc/
+    # additional-location: 'classpath:myloc/' # 최종 resource 참조 위치: classpath:/ , classpath:config/, classpath:myloc/
+
+
     # 아래 import 설정들 모두 유효
     #import: 'classpath:myconfig2.yml,classpath:myconfig.yml'
     import:
@@ -47,3 +52,4 @@ spring:
       - 'classpath:myconfig2.yml'
 my:
   test: application2.yml
+  loc: application default loc

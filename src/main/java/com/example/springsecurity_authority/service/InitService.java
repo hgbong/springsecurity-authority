@@ -22,7 +22,10 @@ public class InitService {
     private String activeProfile;
 
     @Value("${my.test:}")
-    private String testValue;
+    private String configImportTest;
+
+    @Value("${my.loc:}")
+    private String configLocTest;
 
     @PostConstruct
     public void init() {
@@ -36,7 +39,14 @@ public class InitService {
          *   given::    import: 'classpath:myconfig2.yml,classpath:myconfig.yml'
          *   then:: myconfig.yml 우선순위
          */
-        System.out.println("testValue = " + testValue);
+        System.out.println("testValue = " + configImportTest);
+
+
+
+        /**
+         *
+         */
+        System.out.println("configLocTest = " + configLocTest);
 
         if (!"local".equals(activeProfile)) {
             return;
