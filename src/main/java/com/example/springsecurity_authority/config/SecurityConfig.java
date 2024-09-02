@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final RoleService roleService;
-    private final static List<String> permitAllUrls = List.of("/login", "/signup/**", "/error", "/h2-console/**");
+    private final static List<String> permitAllUrls = List.of("/login", "/signup/**", "/error", "/h2-console/**", "/person/**", "/favicon.ico");
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())

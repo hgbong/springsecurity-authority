@@ -21,7 +21,7 @@ public class InitService {
     @Value("${spring.profiles.active:}")
     private String activeProfile;
 
-    @Value("${my.test:}")
+    @Value("${my.test.aaa:}")
     private String configImportTest;
 
     @Value("${my.loc:}")

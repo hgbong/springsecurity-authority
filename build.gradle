@@ -44,9 +44,13 @@ dependencies {
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
 	// redis session 설정
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.session:spring-session-data-redis'
+/*	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.session:spring-session-data-redis'*/
 
+
+	// ldap 설정
+	implementation 'org.springframework.boot:spring-boot-starter-data-ldap'
+	implementation 'com.unboundid:unboundid-ldapsdk:5.1.3'
 }
 
 tasks.named('test') {
